@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/dactylo/static/css/main.fba08785.css",
+    "main.js": "/dactylo/static/js/main.67c88faa.js",
+    "static/js/232.00d230ad.chunk.js": "/dactylo/static/js/232.00d230ad.chunk.js",
+    "index.html": "/dactylo/index.html",
+    "main.fba08785.css.map": "/dactylo/static/css/main.fba08785.css.map",
+    "main.67c88faa.js.map": "/dactylo/static/js/main.67c88faa.js.map",
+    "232.00d230ad.chunk.js.map": "/dactylo/static/js/232.00d230ad.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fba08785.css",
+    "static/js/main.67c88faa.js"
+  ]
+}
