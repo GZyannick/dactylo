@@ -32,13 +32,14 @@ const StyledA = styled.a`
 function App() {
   return (
     <Wrapper>
-        <SplineComponent scene="https://prod.spline.design/xMFZzbpK0IVkOHVg/scene.splinecode" />
-        <Header/>
-        <WriteComponent/>
-        <MadeBy>Made by <StyledA href="https://twitter.com/GouezYannick" target="_blank">GzYannick</StyledA></MadeBy>
+      <SplineComponent
+        scene="https://prod.spline.design/xMFZzbpK0IVkOHVg/scene.splinecode"
+      />
+
+      <Header />
+      <WriteComponent />
+      <MadeBy>Made by <StyledA href="https://twitter.com/GouezYannick" target="_blank">GzYannick</StyledA></MadeBy>
     </Wrapper>
   );
 }
 export default App;
-
-

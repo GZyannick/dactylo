@@ -1,12 +1,11 @@
 import styled from "styled-components"
 import { useState, useRef, useEffect } from "react"
-import { children } from "svelte/internal"
 import words from '../utils/data/words'
 import CountDown from "./CountDown"
 import Wpm from "./Wpm"
 import WordContainer from "./WordContainer"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleLeft, faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons"
 
 
 const Wrapper = styled.div`
@@ -45,7 +44,7 @@ const WarningText = styled.h1`
 
 const Caret = styled.span`
    
-` 
+`
 const RestartButton = styled.button`
     background-color: none;
     padding: 0.5rem 1rem;
@@ -68,149 +67,149 @@ const RestartButton = styled.button`
 
 
 function WriteComponent() {
-    const [userInput, setUserInput] = useState('')
-    const [count, setCount] = useState(0)
-    const [count2, setCount2] = useState(0)
-    const [typedEntries, setTypedEntries] = useState(0)
-    const [showFocusWarning, setShowFocusWarning] = useState(true)
-    const [isFinished, setIsFinished] = useState(false)
-    const [isStart, setIsStart] = useState(false)
-    const inputRef = useRef(null)
-    const [loading, setLoading] = useState(true)
-    const [letterStatus, setLetterStatus] = useState(true)
-    const [wordList, setWordList] = useState([])
-    const [errorEntries, setErrorEntries] = useState(0)
-    useEffect(() =>{
-        setWordList(getRandomWords())
-        setLoading(false)
-    }, [])
+  const [userInput, setUserInput] = useState('')
+  const [count, setCount] = useState(0)
+  const [count2, setCount2] = useState(0)
+  const [typedEntries, setTypedEntries] = useState(0)
+  const [showFocusWarning, setShowFocusWarning] = useState(true)
+  const [isFinished, setIsFinished] = useState(false)
+  const [isStart, setIsStart] = useState(false)
+  const inputRef = useRef(null)
+  const [loading, setLoading] = useState(true)
+  const [letterStatus, setLetterStatus] = useState(true)
+  const [wordList, setWordList] = useState([])
+  const [errorEntries, setErrorEntries] = useState(0)
+  useEffect(() => {
+    setWordList(getRandomWords())
+    setLoading(false)
+  }, [])
 
-    const handleChange = (e) => {
-        setUserInput(e.target.value)
+  const handleChange = (e) => {
+    setUserInput(e.target.value)
+  }
+
+  const handleOnKeyDown = (e) => {
+    // modify the ref children with react props active
+    // react modify the children with react props active
+    setTypedEntries(prevState => prevState + 1)
+    if (!isStart) setIsStart(true)
+    if (!wordList[count] || !wordList[count].letters[count2]) {
+      setWordList(getRandomWords())
+      setCount(0)
+      setCount2(0)
+      return
     }
+    if (e.key === 'Backspace') return
 
-    const handleOnKeyDown = (e) => {
-        // modify the ref children with react props active
-        // react modify the children with react props active
-        setTypedEntries(prevState => prevState + 1)
-        if(!isStart) setIsStart(true)
-        if(!wordList[count] || !wordList[count].letters[count2]) {
-            setWordList(getRandomWords())
-            setCount(0)
-            setCount2(0)
-            return
-        }
-        if(e.key === 'Backspace') return
-
-        if(e.key === wordList[count].letters[count2].char){
-            setWordList(prevState => {
-                return prevState.map((item, index) => {
-                    if(index === count){
-                        return {
-                            ...item,
-                            letters: item.letters.map((letter, index) => {
-                                if(index === count2){
-                                    return {
-                                        ...letter,
-                                        status: letterStatus,
-                                    }
-                                }
-                                return letter
-                            }),
-                            status: true
-                        }
-                    }
-                    return item
-                })
-            })
-
-            setLetterStatus(true)
-            if(wordList[count].letters[count2]?.char === ' ') {
-                setCount2(0)
-                setCount(prevState => prevState + 1)
-                return
-            }else{
-                setCount2(prevState => prevState + 1)
+    if (e.key === wordList[count].letters[count2].char) {
+      setWordList(prevState => {
+        return prevState.map((item, index) => {
+          if (index === count) {
+            return {
+              ...item,
+              letters: item.letters.map((letter, index) => {
+                if (index === count2) {
+                  return {
+                    ...letter,
+                    status: letterStatus,
+                  }
+                }
+                return letter
+              }),
+              status: true
             }
-        }else {
-            setLetterStatus(false)
-            setErrorEntries(prevState => prevState + 1)
-        }
-    }
+          }
+          return item
+        })
+      })
 
-    const handleClick = () => {
-        inputRef.current.focus()
-        setShowFocusWarning(false)
-    }
-
-    const handleOnBlur = (e) => {
-        setShowFocusWarning(true)
-    }
-
-    const handleRestart = () => {
-        setIsStart(false)
-        setIsFinished(false)
-        setUserInput('')
-        setCount(0)
+      setLetterStatus(true)
+      if (wordList[count].letters[count2]?.char === ' ') {
         setCount2(0)
-        setTypedEntries(0)
-        setErrorEntries(0)
-        setWordList(getRandomWords())
-        inputRef.current.focus()
-        setShowFocusWarning(false)
+        setCount(prevState => prevState + 1)
+        return
+      } else {
+        setCount2(prevState => prevState + 1)
+      }
+    } else {
+      setLetterStatus(false)
+      setErrorEntries(prevState => prevState + 1)
     }
+  }
 
-    if(loading) return (
-        <Wrapper>
-            <div>Loading...</div>
-        </Wrapper>
-    )
+  const handleClick = () => {
+    inputRef.current.focus()
+    setShowFocusWarning(false)
+  }
+
+  const handleOnBlur = () => {
+    setShowFocusWarning(true)
+  }
+
+  const handleRestart = () => {
+    setIsStart(false)
+    setIsFinished(false)
+    setUserInput('')
+    setCount(0)
+    setCount2(0)
+    setTypedEntries(0)
+    setErrorEntries(0)
+    setWordList(getRandomWords())
+    inputRef.current.focus()
+    setShowFocusWarning(false)
+  }
+
+  if (loading) return (
+    <Wrapper>
+      <div>Loading...</div>
+    </Wrapper>
+  )
   return (
     <Wrapper>
-        <TypingTest>
-            {isFinished ? (
-               <>
-                <Wpm typedEntries={typedEntries} errorEntries={errorEntries}></Wpm>
-              </>
-            ) : (
-                <>
-                <CountDown setIsFinished={setIsFinished} isStart={isStart}></CountDown>
-                <WordContainer onClick={handleClick} wordList={wordList}/>
-                {showFocusWarning && <WarningFocus onClick={handleClick}><WarningText>Click to focus</WarningText></WarningFocus>} 
-                <TypingTestInput type="text" autoComplete="off" autoCapitalize="off" autoCorrect="off"  onBlur={handleOnBlur} ref={inputRef} name="typing" value={userInput} onChange={(e) => handleChange(e)} onKeyDown={(e) => handleOnKeyDown(e)} />
-                </>
-            )}
-        </TypingTest>
-          
-            <RestartButton onClick={handleRestart}>
-                <FontAwesomeIcon icon={faArrowRotateLeft} color="#5C899C" />
-            </RestartButton>
+      <TypingTest>
+        {isFinished ? (
+          <>
+            <Wpm typedEntries={typedEntries} errorEntries={errorEntries}></Wpm>
+          </>
+        ) : (
+          <>
+            <CountDown setIsFinished={setIsFinished} isStart={isStart}></CountDown>
+            <WordContainer onClick={handleClick} wordList={wordList} />
+            {showFocusWarning && <WarningFocus onClick={handleClick}><WarningText>Click to focus</WarningText></WarningFocus>}
+            <TypingTestInput type="text" autoComplete="off" autoCapitalize="off" autoCorrect="off" onBlur={handleOnBlur} ref={inputRef} name="typing" value={userInput} onChange={(e) => handleChange(e)} onKeyDown={(e) => handleOnKeyDown(e)} />
+          </>
+        )}
+      </TypingTest>
+
+      <RestartButton onClick={handleRestart}>
+        <FontAwesomeIcon icon={faArrowRotateLeft} color="#5C899C" />
+      </RestartButton>
     </Wrapper>
   )
 }
 
 const getRandomWords = () => {
-    const randomWords = []
-    for(let i = 0; i < 16; i++){
-        const randomWord = words[Math.floor(Math.random() * words.length)]
-        const splitWord = randomWord.split('')
-        const objectSplit = splitWord.map((letter) => {
-            return {
-                char: letter,
-                status: null,
-                active: false,
-            }
-        })
-        const addSpaceToEnd = objectSplit.concat({
-            char: ' ',
-            status: null,
-            active: false,
-        })
-        randomWords.push({
-            letters: (i === 15) ? objectSplit : addSpaceToEnd,
-        })
-    }
-    return randomWords
+  const randomWords = []
+  for (let i = 0; i < 16; i++) {
+    const randomWord = words[Math.floor(Math.random() * words.length)]
+    const splitWord = randomWord.split('')
+    const objectSplit = splitWord.map((letter) => {
+      return {
+        char: letter,
+        status: null,
+        active: false,
+      }
+    })
+    const addSpaceToEnd = objectSplit.concat({
+      char: ' ',
+      status: null,
+      active: false,
+    })
+    randomWords.push({
+      letters: (i === 15) ? objectSplit : addSpaceToEnd,
+    })
+  }
+  return randomWords
 }
 
 export default WriteComponent
